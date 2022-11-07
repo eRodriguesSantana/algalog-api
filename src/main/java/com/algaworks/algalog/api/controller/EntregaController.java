@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algalog.api.model.EntregaModel;
 import com.algaworks.algalog.domain.model.Entrega;
 import com.algaworks.algalog.domain.service.SolicitacaoEntregaService;
 
@@ -37,7 +39,7 @@ public class EntregaController {
 	}
 	
 	@GetMapping("/{entregaId}")
-	public Entrega buscarPorId(@PathVariable Long entregaId) {
+	public ResponseEntity<EntregaModel> buscarPorId(@PathVariable Long entregaId) {
 		return solicitacaoEntregaService.buscaPorId(entregaId);
 	}
 }
