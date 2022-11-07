@@ -2,7 +2,6 @@ package com.algaworks.algalog.domain.service;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,10 +39,9 @@ public class CatalogoClienteService {
 	}
 	
 	@Transactional
-	public ResponseEntity<Cliente> buscaPorId(Long clienteId) {
+	public Cliente buscaPorId(Long clienteId) {
 		return clienteRepository.findById(clienteId)
-				.map(cliente -> ResponseEntity.ok(cliente))
-				.orElse(ResponseEntity.notFound().build());
+				.orElseThrow(() -> new NegocioException("Cliente não encontrado"));
 	}
 	
 	@Transactional

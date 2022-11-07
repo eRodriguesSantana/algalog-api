@@ -34,7 +34,7 @@ public class ClienteController {
 	}
 	
 	@GetMapping("/{clienteId}")
-	public ResponseEntity<Cliente> buscarPorId(@PathVariable Long clienteId) {
+	public Cliente buscarPorId(@PathVariable Long clienteId) {
 		return catalogoClienteService.buscaPorId(clienteId);
 	}
 	
