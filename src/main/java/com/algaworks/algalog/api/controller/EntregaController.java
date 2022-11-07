@@ -1,6 +1,12 @@
 package com.algaworks.algalog.api.controller;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +27,17 @@ public class EntregaController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Entrega solicitarEntrega(@RequestBody Entrega entrega) {
+	public Entrega solicitarEntrega(@Valid @RequestBody Entrega entrega) {
 		return solicitacaoEntregaService.solicitar(entrega);
+	}
+	
+	@GetMapping
+	public List<Entrega> listar(){
+		return solicitacaoEntregaService.listar();
+	}
+	
+	@GetMapping("/{entregaId}")
+	public Entrega buscarPorId(@PathVariable Long entregaId) {
+		return solicitacaoEntregaService.buscaPorId(entregaId);
 	}
 }
