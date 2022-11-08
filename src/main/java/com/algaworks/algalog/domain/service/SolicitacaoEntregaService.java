@@ -3,11 +3,11 @@ package com.algaworks.algalog.domain.service;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.algaworks.algalog.api.assembler.EntregaAssembler;
 import com.algaworks.algalog.api.model.EntregaModel;
 import com.algaworks.algalog.domain.exception.NegocioException;
 import com.algaworks.algalog.domain.model.Cliente;
@@ -23,7 +23,7 @@ public class SolicitacaoEntregaService {
 
 	private CatalogoClienteService catalogoClienteService;
 	private EntregaRepository entregaRepository;
-	private ModelMapper modelMapper;
+	private EntregaAssembler entregaAssembler;
 	
 	@Transactional
 	public Entrega solicitar(Entrega entrega) {
@@ -37,18 +37,14 @@ public class SolicitacaoEntregaService {
 	}
 	
 	@Transactional
-	public List<Entrega> listar(){
-		return entregaRepository.findAll();
+	public List<EntregaModel> listar(){
+		return entregaAssembler.toCollectionModel(entregaRepository.findAll());
 	}
 	
 	@Transactional
 	public ResponseEntity<EntregaModel> buscaPorId(Long entregaId) {
 		return entregaRepository.findById(entregaId)
-				.map(entrega -> {
-					EntregaModel entregaModel = modelMapper.map(entrega, EntregaModel.class);
-					
-					return ResponseEntity.ok(entregaModel);
-				})
+				.map(entrega -> ResponseEntity.ok(entregaAssembler.toModel(entrega)))
 				.orElseThrow(() -> new NegocioException("Entrega não encontrada"));
 	}
 }

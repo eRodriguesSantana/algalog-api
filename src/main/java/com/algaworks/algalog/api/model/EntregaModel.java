@@ -13,10 +13,11 @@ import lombok.Setter;
 public class EntregaModel {
 
 	private Long id;
-	private String nomeCliente;
+	private ClienteResumoModel cliente;
 	private DestinatarioModel destinatario;
 	private BigDecimal taxa;
 	private StatusEntrega status;
 	private OffsetDateTime dataPedido;
 	private OffsetDateTime dataFinalizacao;
+	
 }

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algalog.api.assembler.EntregaAssembler;
 import com.algaworks.algalog.api.model.EntregaModel;
+import com.algaworks.algalog.api.model.input.EntregaInput;
 import com.algaworks.algalog.domain.model.Entrega;
 import com.algaworks.algalog.domain.service.SolicitacaoEntregaService;
 
@@ -26,15 +28,20 @@ import lombok.AllArgsConstructor;
 public class EntregaController {
 	
 	private SolicitacaoEntregaService solicitacaoEntregaService;
+	private EntregaAssembler entregaAssembler;
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Entrega solicitarEntrega(@Valid @RequestBody Entrega entrega) {
-		return solicitacaoEntregaService.solicitar(entrega);
+	public EntregaModel solicitarEntrega(@Valid @RequestBody EntregaInput entregaInput) {
+		Entrega novaEntrega = entregaAssembler.toEntity(entregaInput);
+		
+		Entrega entregaSolicitada = solicitacaoEntregaService.solicitar(novaEntrega);
+		
+		return entregaAssembler.toModel(entregaSolicitada);
 	}
 	
 	@GetMapping
-	public List<Entrega> listar(){
+	public List<EntregaModel> listar(){
 		return solicitacaoEntregaService.listar();
 	}
 	
